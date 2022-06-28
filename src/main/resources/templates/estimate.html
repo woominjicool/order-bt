@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="HandheldFriendly" content="true"/>
+    <title>배터리견적시스템 견적서</title>
+    <th:block th:replace="_fragment/config :: configFragment"></th:block>
+    <style>
+        body {background-color: white; color: #000000;}
+    </style>
+</head>
+<body>
+<div id="pdf" style="z-index: 9999">
+    <div class="customNotice">
+        <p>* 본 견적은 상담진행을 위한 견적서 입니다.</p>
+        <p>* 기술 상담 진행 후 확정 견적서를 다시 제공해 드립니다.</p>
+    </div>
+    <div class="inner_page03">
+        <div>
+            <h1>견적서 (상담 전)</h1>
+            <table class="tableInfo">
+                <tbody>
+                <tr>
+                    <th rowspan="5">수신자</th>
+                    <td colspan="2" th:text="${estimate.getCompany()} + ' 귀하'"></td>
+                    <th rowspan="5">공급자</th>
+                    <td class="backG">등록번호</td>
+                    <td colspan="4">307-81-50055</td>
+
+                </tr>
+                <tr>
+                    <td class="backG">견적일자</td>
+                    <td id="est_date"></td>
+
+                    <td class="backG">상호</td>
+                    <td>주식회사 씨티엔에스</td>
+                    <td class="backG">성명</td>
+                    <td>권기정</td>
+                </tr>
+                <tr>
+
+                    <td class="backG">전화번호</td>
+                    <td th:text="${estimate.getTel()}"></td>
+
+                    <td class="backG">주소</td>
+                    <td colspan="3">경상남도 창원시 의창구 팔용동 신화테크노밸리 640호</td>
+
+                </tr>
+                <tr>
+
+                    <td class="backG">이메일</td>
+                    <td th:text="${estimate.getEmail()}"></td>
+
+                    <td class="backG">업태</td>
+                    <td>제조업</td>
+                    <td class="backG">종목</td>
+                    <td>스마트모빌리티제조업</td>
+                </tr>
+                <tr>
+
+                    <td colspan="2">견적 요청에 감사드리며 아래와 같이 견적합니다.</td>
+                    <td class="backG">전화번호</td>
+                    <td>055-294-9522</td>
+                    <td class="backG">팩스번호</td>
+                    <td>055-294-9556</td>
+                </tr>
+                <tr>
+                    <td colspan="8" class="backG">합계금액 : 일금 칠억삼천오백육십이만오천 원정(₩ 735,625,000)(부가세 포함)
+                    </th>
+                </tr>
+                </tbody>
+            </table>
+            <table class="tableDetails">
+                <thead>
+                <tr>
+                    <th>순번</th>
+                    <th>주문번호</th>
+                    <th>품목명</th>
+                    <th>규격</th>
+                    <th>수량</th>
+                    <th>단가</th>
+                    <th>공급가액</th>
+                    <th>세액</th>
+                    <th>비고</th>
+                </tr>
+                <tr class="t1">
+                    <td>1</td>
+                    <td th:text="${estimate.getId()}"></td>
+                    <td th:text="${estimate.getOrder().getBatteryCell()} + ${estimate.getOrder().getCellModel()} + ${estimate.getOrder().getVoltage()} + ${estimate.getOrder().getAmpere()}"></td>
+                    <td>pack</td>
+                    <td th:text="${estimate.getOrder().getSampleQty()}"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="t2">
+                    <td>2</td>
+                    <td></td>
+                    <td>입출력단자</td>
+                    <td></td>
+                    <td>상담필요</td>
+                    <td>상담필요</td>
+                    <td>상담필요</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="t3">
+                    <td>3</td>
+                    <td></td>
+                    <td th:text="${estimate.getOrder().getPcm()}"></td>
+                    <td></td>
+                    <td>1</td>
+                    <td></td>
+                    <td>가격</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="t4">
+                    <td>4</td>
+                    <td></td>
+                    <td>개발비</td>
+                    <td></td>
+                    <td>1</td>
+                    <td>필요시</td>
+                    <td>필요시</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="t5">
+                    <th colspan="3">합계</th>
+                    <td></td>
+                    <td id="est_qty">668,750,000</td>
+                    <td id="est_price">66,875,000</td>
+                    <td id="est_total"></td>
+                    <td id="est_tax"></td>
+                    <td></td>
+                </tr>
+                </thead>
+            </table>
+            <table class="tableNotice">
+                <tr>
+                    <th>납기일자</th>
+                    <td th:text="${estimate.getOrder().getSampleDate()}"></td>
+                    <th>납품장소</th>
+                    <td th:text="${estimate.getOrder().getAddress()} + ' ' + ${estimate.getOrder().getAddressDtl()}"></td>
+                </tr>
+                <tr>
+                    <th>유효일자</th>
+                    <td id="est_effective_date"></td>
+                    <th>결제조건</th>
+                    <td>100% 현금 사전입금</td>
+                </tr>
+                <tr>
+                    <th class="backG" colspan="4">비고(요청사항)</th>
+                </tr>
+                <tr>
+                    <th>PCM</th>
+                    <td colspan="3" th:text="${estimate.getOrder().getPcmRemark()}"></td>
+                </tr>
+                <tr>
+                    <th>케이스</th>
+                    <td colspan="3" th:text="${estimate.getOrder().getCaseRemark()}"></td>
+                </tr>
+                <tr>
+                    <th>주문수량</th>
+                    <td colspan="3" th:text="${estimate.getOrder().getRemark()}"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script th:inline="javascript">
+    $(document.body).ready(function() {
+        setTimeout(() => {
+            pdfExport();
+        }, 1000);
+    });
+
+    function pdfExport() {
+
+        //저장 영역 div id
+        html2canvas($('#pdf')[0] ,{
+            //logging : true,		// 디버그 목적 로그
+            // proxy: "html2canvasproxy.php",
+            allowTaint : true,	// cross-origin allow
+            useCORS: true,		// CORS 사용한 서버로부터 이미지 로드할 것인지 여부
+            profile: true
+            // scale : 2			// 기본 96dpi에서 해상도를 두 배로 증가
+
+        }).then(function(canvas) {
+            // 캔버스를 이미지로 변환
+            var imgData = canvas.toDataURL('image/png');
+
+            console.log(imgData);
+
+            var imgWidth = 190; // 이미지 가로 길이(mm) / A4 기준 210mm
+            var pageHeight = imgWidth * 1.414;  // 출력 페이지 세로 길이 계산 A4 기준
+            var imgHeight = canvas.height * imgWidth / canvas.width;
+            var heightLeft = imgHeight;
+            var margin = 10; // 출력 페이지 여백설정
+            var doc = new jsPDF('p', 'mm');
+            var position = 0;
+
+            // 첫 페이지 출력
+            doc.addImage(imgData, 'PNG', margin, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+
+            // 한 페이지 이상일 경우 루프 돌면서 출력
+            while (heightLeft >= 20) {			// 35
+                position = heightLeft - imgHeight;
+                position = position - 28 ;		// -25
+
+                doc.addPage();
+                doc.addImage(imgData, 'PNG', margin, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+            }
+
+            var username = [[${estimate.company}]] ;
+
+            // 파일 저장
+            doc.save(username + '님_잇다_견적서_.pdf');
+
+        });
+
+    }
+</script>

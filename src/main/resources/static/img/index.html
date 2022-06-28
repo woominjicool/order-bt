@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>에필</title>
+    <th:block th:replace="cms/_fragment/config :: configFragment" ></th:block>
+</head>
+<body>
+
+<div class="main_wrap">
+    <th:block th:replace="cms/_fragment/header ::  adminAside"></th:block>
+
+    <div class="main_container">
+        <section class="main_section">
+            <h2 class="main_title"><span class="material-icons-round"> done_outline</span> 팝업관리</h2>
+            <div class="main_summary">
+                <dl>
+                    <dt>팝업 수</dt>
+                    <dd>00개</dd>
+                </dl>
+                <dl>
+                    <dt>활성화</dt>
+                    <dd>00개</dd>
+                </dl>
+                <a href="#" class="popup_trigger" onclick="showModal('popupManagement')"><i></i>팝업 추가</a>
+            </div>
+            <div class="main_utility">
+                <form action="" onsubmit="return get(this)">
+                    <label for="toDate">조회일</label>
+                    <input type="date" name="from" id="toDate">
+                    -
+                    <input type="date" name="to" id="fromDate">
+                    <button class="btn filter" id="search">조회</button>
+                </form>
+                <div class="btn_wrap">
+                    <button class="btn stroke"><span class="material-icons-outlined">file_download</span>엑셀다운로드</button>
+                </div>
+            </div>
+            <div class="main_content">
+                <!-- 보드 영역 main_dashboard-->
+                <div class="main_dashboard">
+                    <div class="sub_cont">
+                        <div class="btn_wrap">
+                            <select name="viewNum" id="setGridPageCount">
+                                <option value="100" selected>100개씩</option>
+                                <option value="200">200개씩</option>
+                                <option value="300">300개씩</option>
+                            </select>
+                            <button type="button" class="btn stroke"><span class="material-icons-outlined">view_list</span>칼럼위치저장</button>
+                            <button type="button" class="btn stroke"><span class="material-icons-outlined">restart_alt</span>칼럼초기화</button>
+                        </div>
+                    </div>
+                    <div class="grid_wrap">
+                        <div id="setGrid"></div>
+                        <div id="setGridPager" class="pager"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- 팝업 -->
+    <!-- 팝업 : 팝업 추가 -->
+    <div class="popup" data-modal="popupManagement">
+        <div class="popup_container">
+            <div class="popup_head">
+                <p class="popup_title">팝업추가</p>
+                <button type="button" class="popup_close">x</button>
+            </div>
+            <div class="popup_inner">
+                <dfn>필수항목 <i>*</i></dfn>
+                <form action="" onsubmit="return popupAdd(this)">
+                    <input type="hidden" name="active" value="">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <th>게시일자<i>*</i></th>
+                            <td>
+                                <input type="date" name="from"> ~ <input type="date" name="to">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>활성화</th>
+                            <td>
+                                <input type="checkbox" name="active_yn" id="modalActive">
+                                <label for="modalActive"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>제목<i>*</i></th>
+                            <td>
+                                <input type="text" name="title" style="width:300px;">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>카테고리<i>*</i></th>
+                            <td>
+                                <select name="category" id="popupCategory" style="width:300px">
+                                    <option value="" hidden>카테고리를 선택해주세요</option>
+                                    <option value="외부링크">외부링크</option>
+                                    <option value="홍보용배너">홍보용배너</option>
+                                    <option value="공지상세화면이동">공지상세화면이동</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>공지번호</th>
+                            <td>
+                                <input type="text" name="noticeId">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>링크</th>
+                            <td>
+                                <input type="text" name="link">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>내용<i>*</i></th>
+                            <td>
+                                <th:block th:replace="/_include/ckeditor :: ckeditor('popupManagementTextarea')"></th:block>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="popup_btn_area">
+                        <button class="btn confirm">추가</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- 공지추가 팝업 영역 끝-->
+</div>
+
+<style>
+    .ck.ck-editor {
+        max-width: 400px
+    }
+
+    .ck-editor__editable {
+        min-height: 300px;
+    }
+</style>
+
+
+<script>
+
+    /* 수정 모달에 에디터 선언 */
+    var editor1 = null;
+    loadEditor().then ((res) => {
+        editor1 = res;
+    })
+
+    var gridBindings = [
+        {binding: 'id', header: '팝업번호', isReadOnly: true, width: 100, align: "center"},
+        {binding: 'title', header: '제목', isReadOnly: true, width: 150, align: "center"},
+        {binding: 'category', header: '카테고리', isReadOnly: true, width: 150, align: "center"},
+        {binding: 'from', header: '시작일', isReadOnly: true, width: 150, align: "center"},
+        {binding: 'to', header: '종료일', isReadOnly: true, width: 150, align: "center"},
+        {binding: 'active', header: '활성화', isReadOnly: true, width: 150, align: "center"},
+        {binding: 'notice_id', header: '공지번호', isReadOnly: true, width: 150, align: "center"},
+        {binding: 'link', header: '링크', isReadOnly: true, width: 150, align: "center"},
+        {
+            binding: '', header: '정보수정', isReadOnly: true, width: 150, align: "center",
+            cellTemplate: wijmo.grid.cellmaker.CellMaker.makeButton({
+                text: '조회',
+                click: (e, ctx) => showModal('popupManagement', ctx),
+            })
+        },
+    ];
+
+    var gridOption = loadGridUserList(gridBindings, 'popup_layout');
+    var setGrid = gridOption.setGrid;
+    var setGridPager = gridOption.setGridPager;
+    var gridView = gridOption.gridView;
+
+
+    function loadGridUserList(gridBindings, layoutName, lists= []) {
+
+        var gridView = new wijmo.collections.CollectionView(lists, {
+            pageSize: 30,
+        });
+
+        var setGridPager = new wijmo.input.CollectionViewNavigator('#setGridPager', {
+            byPage: true,
+            headerFormat: '{currentPage:n0} / {pageCount:n0}',
+            cv: gridView
+        });
+
+        var setGrid = new wijmo.grid.FlexGrid('#setGrid', {
+            autoGenerateColumns: false,
+            selectionMode: 'MultiRange',
+            showMarquee: true,
+            allowMerging: 'ColumnHeaders',
+            alternatingRowStep: 0,
+            columns: gridBindings,
+            itemsSource: gridView,
+            keyActionEnter: "MoveDown",
+            imeEnabled: true,
+            loadedRows: function (s, e) {
+            },
+            cellEditEnded: function (s, e) {
+                // s.autoSizeColumn(e.col);
+            },
+            rowEditEnded: function (s, e) {
+                // s.autoSizeColumns();
+            },
+            itemFormatter: function (p, r, c, cell) {
+
+                if (p.cellType == wijmo.grid.CellType.RowHeader) {
+                    //cell.textContent = (r+1).toString();
+                    cell.textContent = (gridView.pageSize * gridView.pageIndex + r + 1).toString();
+                }
+            }
+        });
+
+        _setUserGridLayout(layoutName, setGrid, gridBindings);
+        refreshPaging(setGrid.collectionView.totalItemCount, 1, setGrid, 'setGrid');  // 페이징 초기 셋팅
+
+        return {
+            setGrid,
+            setGridPager,
+            gridView,
+        }
+    }
+
+
+    function get(f)
+    {
+
+        $.ajax({
+            url : '/cms/popup/get',
+            async : false,
+            type : 'get',
+            data : $(f).serialize(),
+            success : function(data) {
+
+                gridView = new wijmo.collections.CollectionView(data, {
+                    pageSize: Number($('#setGridPageCount').val()),
+                });
+                //
+                setGridPager.cv = gridView;
+                setGrid.itemsSource = gridView;
+                //
+                refreshPaging(setGrid.collectionView.totalItemCount, 1, setGrid, 'setGrid');  // 페이징 초기 셋팅
+            },
+            error : function(request,status,error) {
+                alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            }
+        });
+
+        return false;
+    }
+
+    function showModal(modal, ctx=null) {
+
+        /* 모달켜기 */
+        const _target = document.querySelector(".popup[data-modal='"+modal+"']");
+        _target.style.display = "block";
+
+        /* 모달안에 인풋초기화 */
+        _target.querySelectorAll("input, select").forEach ((el, i) => {
+            el.value = "";
+        })
+        /* 모달 텍스트아레아 초기화 */
+        editor1.setData("")
+
+        switch (modal) {
+            case "popupManagement":
+                _target.querySelector(".popup_title").textContent = "팝업추가"
+                break;
+            default:
+
+        }
+
+        /* 모달안에 값 있을 경우 */
+        if (ctx != null) {
+
+            switch (modal) {
+                case "popupManagement":
+                    _target.querySelector("input[name='from']").value = new Date(ctx.item.from).format("yyyy-mm-dd");
+                    _target.querySelector("input[name='to']").value = new Date(ctx.item.to).format("yyyy-mm-dd");
+                    _target.querySelector("input[name='title']").value = ctx.item.title;
+                    _target.querySelector(".popup_title").textContent = "팝업수정"
+                    _target.querySelectorAll("input, select").forEach((el, i) => {
+
+                        if (el.tagName.toLowerCase() == "input") {
+                            if (el.getAttribute("type").toLowerCase() == "text") {
+                                el.value = ctx.item[el.getAttribute("name")]
+                            }
+                        }
+                        else if (el.tagName.toLowerCase() == "select") {
+                            el.value = ctx.item[el.getAttribute("name")]
+                        }
+
+                    })
+                    editor1.setData(ctx.item.contents)
+                    break;
+                default:
+                    break;
+            }
+
+        }
+    }
+
+    $(document).on("click", ".popup_close", function () {
+        $(".popup").hide();
+    })
+
+    function popupAdd(f) {
+
+        if (f.from.value == "") {
+            alert("시작일을 설정해주세요");
+            return false;
+        }
+
+        if (f.to.value == "") {
+            alert("종료일을 설정해주세요");
+            return false;
+        }
+
+        if (f.title.value == "") {
+            alert("제목을 입력해주세요");
+            return false;
+        }
+
+        if (f.category.value == "") {
+            alert("카테고리를 선택해주세요");
+            return false;
+        }
+
+        f.active.value = f.active_yn.checked ? 'Y' : 'N'
+
+        axios.post("/cms/popup/", rows).then((res) => {
+            if (res.status == 200) {
+                alert("수정했습니다");
+            } else {
+                alert("오류가 발생했습니다. 다시 시도해 주세요");
+            }
+        })
+
+    }
+
+
+
+</script>
+
+</body>
+</html>

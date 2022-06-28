@@ -1,0 +1,1593 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1.0,width=device-width" />
+    <meta name="HandheldFriendly" content="true" />
+    <title>배터리견적시스템</title>
+    <th:block th:replace="_fragment/config :: configFragment"></th:block>
+</head>
+
+<body class="body">
+<th:block th:replace="_fragment/header :: headerFragment"></th:block>
+<div id="content" class="content pg_layout01" data-step="14">
+    <div class="inner">
+
+        <div class="content_tit_wrap topbar">
+            <p class="tit">상담을 위한 정보를 기입해주세요.</p>
+            <ul class="page02_step">
+                <li class="current">01</li>
+                <li>02</li>
+                <li>03</li>
+                <li>04</li>
+                <li>05</li>
+                <li>06</li>
+                <li>07</li>
+                <li>08</li>
+                <li>09</li>
+            </ul>
+        </div>
+
+        <!-- side -->
+        <div class="require_select_wrap">
+            <div class="require_wrap">
+                <div class="require_triger"><span class="txt">선택 항목</span><span
+                        class="material-icons-outlined">close</span></div>
+                <p class="reTit">입력하신 정보 입니다.</p>
+                <ul class="require_items">
+                    <li><span class="item_tit">견적번호</span><span class="item_txt" id="customNumber"></span></li>
+                    <li><span class="item_tit">용도</span><span class="item_txt" id="purpose"></span></li>
+                    <li><span class="item_tit">출력 정보</span><span class="item_txt" id="info"></span></li>
+                    <li><span class="item_tit">희망 배터리셀</span><span class="item_txt" id="battery"></span></li>
+                    <!-- <li><span class="item_tit">배터리셀 구분</span><span class="item_txt" id="battery_type"></span></li> -->
+                    <li><span class="item_tit">셀 모델</span><span class="item_txt" id="cell_model"></span></li>
+                    <li><span class="item_tit">전압</span><span class="item_txt" id="voltage"></span></li>
+                    <li><span class="item_tit">용량</span><span class="item_txt" id="volume"></span></li>
+                    <li><span class="item_tit">보호회로(PCM)</span><span class="item_txt" id="pcm"></span></li>
+                    <li><span class="item_tit">케이스타입</span><span class="item_txt" id="case"></span></li>
+                    <li><span class="item_tit">주문 수량</span><span class="item_txt" id="qty"></span></li>
+                </ul>
+            </div>
+
+            <div class="select_wrap">
+                <form name="orderForm">
+                    <!-- page01 -->
+                    <div class="page-switch page-switch--on page01 on" data-step-container="1">
+                        <p class="customSearch">견적받기</p>
+                        <ul class="info_wrap">
+                            <li><span class="label">업체명</span>
+                                <input type="text" class="info_input" name="company" placeholder="개인일 경우 빈칸">
+                                <p class="invalidCompany"
+                                   style="display: none; color:#F44A5A; font-size:1.2rem; line-height:2;">업체명을 입력해주세요</p>
+                            </li>
+                            <li><span class="label">이름</span>
+                                <input type="text" class="info_input" name="name">
+                                <p class="invalidName"
+                                   style="display: none; color:#F44A5A; font-size:1.2rem; line-height:2;">이름을 입력해주세요</p>
+                            </li>
+                            <li><span class="label">전화번호</span>
+                                <input type="tel" class="info_input numeric-only" name="telNum" placeholder="000-0000-0000" pattern="[0-9]*" inputmode="tel" min="0" >
+                                <p class="invalidTelNum"
+                                   style="display: none; color:#F44A5A; font-size:1.2rem; line-height:2;">전화번호를 입력해주세요</p>
+                            </li>
+                            <li><span class="label">이메일</span>
+                                <input type="text" class="info_input" name="email">
+                                <p class="invalidEmail"
+                                   style="display: none; color:#F44A5A; font-size:1.2rem; line-height:2;">이메일을 입력해주세요</p>
+                            </li>
+                            <li class="chk"><input type="checkbox" id="agree_chk" name="agree_chk">
+                                <label for="agree_chk">개인정보처리방침 동의</label>
+                                <p class="invalidAgree"
+                                   style="display: none; color:#F44A5A; font-size:1.3rem; line-height:2; margin-top: 2rem;">개인정보처리방침에 동의해주세요</p>
+                                <a href="" class="agreeViewAll"><span class="agreetxt">전문보기</span></a>
+                            </li>
+                        </ul>
+                        <div class="innerpage01">
+                            <p class="customSearch">견적조회</p>
+                            <p class="customQ">기존에 받아보신 견적번호가 있으십니까?</p>
+                            <ul>
+                                <li>
+                                    <span class="label">견적번호</span>
+                                    <input type="tel" class="info_input numeric-only" name="customNum" pattern="[0-9]*" inputmode="tel" min="0" >
+                                    <div id="target_customNumber1">
+                                        <a href="#" onclick="" class="btn-customS">조회</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- page02_01 -->
+                    <div class="page-switch page02_01" data-step-container="2">
+                        <div class="select_items">
+                            <p class="items_tit">용도를 선택해 주세요.</p>
+                            <form class="items_wrap">
+                                <div class="chk_item purpose" data-num="tabCont01">
+                                    <input type="checkbox" name="items" value="mobil"><span>소형 모빌리티</span>
+                                </div>
+                                <div class="chk_item purpose" data-num="tabCont02">
+                                    <input type="checkbox" name="items" value="farm"><span>농기계</span>
+                                </div>
+                                <div class="chk_item purpose" data-num="tabCont03">
+                                    <input type="checkbox" name="items" value="power_bank"><span>파워뱅크</span>
+                                </div>
+                                <div class="chk_item purpose" data-num="tabCont04">
+                                    <input type="checkbox" name="items" value="ups_ess"><span>UPS/ESS</span>
+                                </div>
+                                <div class="chk_item purpose" data-num="tabCont05">
+                                    <input type="checkbox" name="items" value="robot"><span>로봇</span>
+                                </div>
+                                <div class="chk_item purpose" data-num="tabCont06">
+                                    <input type="checkbox" name="items" value="equipment"><span>산업장비</span>
+                                </div>
+                                <div class="chk_item purpose" data-num="tabCont07">
+                                    <input type="checkbox" name="items" value="dron"><span>드론</span>
+                                </div>
+                                <div class="chk_item purpose" data-num="tabCont08">
+                                    <input type="checkbox" name="items" value="etc"><span>기타</span>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="exp_wrap">
+                            <div class="exp_items_wrap purpose tabCont01">
+                                <p class="exp_tit">소형 모빌리티 예시입니다.</p>
+                                <div class="exp_items flex_wrap">
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/img1.png" alt="1인 자동차">
+                                        </div>
+                                        <p class="item_name">1인 자동차</p>
+                                    </div>
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/img2.png" alt="전동 스쿠터">
+                                        </div>
+                                        <p class="item_name">전동 스쿠터</p>
+                                    </div>
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/img3.jpg" alt="전동 보드">
+                                        </div>
+                                        <p class="item_name">전동 보드</p>
+                                    </div>
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/img4.png" alt="전동 자전거">
+                                        </div>
+                                        <p class="item_name">전동 자전거</p>
+                                    </div>
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/img5.jpg" alt="유아 전동차">
+                                        </div>
+                                        <p class="item_name">유아 전동차</p>
+                                    </div>
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/img6.jpg" alt="전동 휠">
+                                        </div>
+                                        <p class="item_name">전동 휠</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="exp_items_wrap purpose tabCont02">
+                                <p class="exp_tit">농기계 예시</p>
+                                <div class="exp_items flex_wrap">
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/img2-1.jpg" alt="농기계">
+                                        </div>
+                                        <p class="item_name">농기계</p>
+                                    </div>
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/img2-2.jpg" alt="이양기">
+                                        </div>
+                                        <p class="item_name">이양기</p>
+                                    </div>
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/img2-3.jpg" alt="콤바인">
+                                        </div>
+                                        <p class="item_name">콤바인</p>
+                                    </div>
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/img2-4.jpg" alt="트렉터">
+                                        </div>
+                                        <p class="item_name">트렉터</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="exp_items_wrap purpose tabCont03">
+                                <p class="exp_tit">파워뱅크 예시</p>
+                                <div class="exp_items flex_wrap">
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/img3-1.png" alt="우드 뱅크">
+                                        </div>
+                                        <p class="item_name">우드 뱅크</p>
+                                    </div>
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/img3-2.png" alt="전동 킥보드 주행용 배터리">
+                                        </div>
+                                        <p class="item_name">전동 킥보드 주행용 배터리</p>
+                                    </div>
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/img3-3.jpg" alt="캠핑 배터리">
+                                        </div>
+                                        <p class="item_name">캠핑 배터리</p>
+                                    </div>
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/img3-4.png" alt="RC카 배터리">
+                                        </div>
+                                        <p class="item_name">RC카 배터리</p>
+                                    </div>
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/img3-5.png" alt="카라반 인산철 배터리">
+                                        </div>
+                                        <p class="item_name">카라반 인산철 배터리</p>
+                                    </div>
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/img3-6.jpg" alt="휴대용 배터리">
+                                        </div>
+                                        <p class="item_name">휴대용 배터리</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="exp_items_wrap purpose tabCont04">
+                                <p class="exp_tit">UPS/ESS 예시</p>
+                                <div class="exp_items flex_wrap">
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/ESS 5.jpg" alt="UPS">
+                                        </div>
+                                        <p class="item_name">UPS</p>
+                                    </div>
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/UPS 1.jpg" alt="ESS">
+                                        </div>
+                                        <p class="item_name">ESS</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="exp_items_wrap purpose tabCont05">
+                                <p class="exp_tit">로봇 예시</p>
+                                <div class="exp_items flex_wrap">
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/img5-1.png" alt="가정용 로봇">
+                                        </div>
+                                        <p class="item_name">가정용 로봇</p>
+                                    </div>
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/img5-2.jpg" alt="배달 로봇">
+                                        </div>
+                                        <p class="item_name">배달 로봇</p>
+                                    </div>
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/img5-3.jpg" alt="안내 로봇">
+                                        </div>
+                                        <p class="item_name">안내 로봇</p>
+                                    </div>
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/img5-4.jpg" alt="보안 경비 서비스 로봇">
+                                        </div>
+                                        <p class="item_name">보안 경비 서비스 로봇</p>
+                                    </div>
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/img5-5.jpg" alt="애완 로봇">
+                                        </div>
+                                        <p class="item_name">애완 로봇</p>
+                                    </div>
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/img5-6.jpg" alt="청소 로봇">
+                                        </div>
+                                        <p class="item_name">청소 로봇</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="exp_items_wrap purpose tabCont06">
+                                <p class="exp_tit">산업장비 예시</p>
+                                <div class="exp_items flex_wrap">
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/img6-1.png" alt="산업장비(멸균시스템)">
+                                        </div>
+                                        <p class="item_name">산업장비(멸균시스템)</p>
+                                    </div>
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/img6-2.png" alt="산업용 헤드라이터">
+                                        </div>
+                                        <p class="item_name">산업용 헤드라이터</p>
+                                    </div>
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/img6-3.png" alt="무전기">
+                                        </div>
+                                        <p class="item_name">무전기</p>
+                                    </div>
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/img6-4.jpg" alt="전동 드릴">
+                                        </div>
+                                        <p class="item_name">전동 드릴</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="exp_items_wrap purpose tabCont07">
+                                <p class="exp_tit">산업장비 예시</p>
+                                <div class="exp_items flex_wrap">
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/img7-1.jpg" alt="경계감시용 드론">
+                                        </div>
+                                        <p class="item_name">경계감시용 드론</p>
+                                    </div>
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/img7-2.jpg" alt="군사 드론">
+                                        </div>
+                                        <p class="item_name">군사 드론</p>
+                                    </div>
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/img7-3.jpg" alt="농업용 드론">
+                                        </div>
+                                        <p class="item_name">농업용 드론</p>
+                                    </div>
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/img7-4.jpg" alt="무인 정찰기">
+                                        </div>
+                                        <p class="item_name">무인 정찰기</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="exp_items_wrap purpose tabCont08">
+                                <p class="exp_tit">군사장비 예시</p>
+                                <div class="exp_items flex_wrap">
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/img8-1.png" alt="군통신장비">
+                                        </div>
+                                        <p class="item_name">군통신장비</p>
+                                    </div>
+                                    <div class="item">
+                                        <div class="img_wrap">
+                                            <img src="img/img8-2.png" alt="군통신장비(무전기)">
+                                        </div>
+                                        <p class="item_name">군통신장비(무전기)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- page02_01_01 -->
+                    <div class="page-switch page02_01_01" data-step-container="3">
+                        <div class="select_items">
+                            <p class="items_tit">출력정보를 입력해 주세요.</p>
+                            <ul class="info_wrap">
+                                <li><span class="label">정격 출력</span>
+                                    <p class="necs">* 필수항목</p>
+                                    <input type="number" class="info_input" name="rated_volt" pattern="[0-9]*" inputmode="numeric" min="0">
+
+                                    <p class="wh">Wh</p>
+                                </li>
+                                <li><span class="label">최대 출력</span>
+                                    <input type="number" class="info_input" name="max_volt" pattern="[0-9]*" inputmode="numeric" min="0">
+                                    <p class="wh">Wh</p>
+                                </li>
+                                <li class="chk"><span class="label"></span><input type="checkbox" id="unknow_volt_chk"
+                                                                                  name="unknow_volt_chk" value="unknow_volt_chk">
+                                    <label for="unknow_volt_chk">모름</label></li>
+                            </ul>
+                            <p class="invalidVolt"
+                               style="display: none; color:#F44A5A; font-size:1.4em; line-height:2;">출력정보를 입력해주세요.</p>
+                        </div>
+
+                        <div class="exp_wrap">
+                            <div class="exp_items_wrap">
+                                <div class="exp_items">
+                                    <div class="item">
+                                        <p class="item_tit">정격 출력이란?</p>
+                                        <p class="item_txt">기기의 공식 출력으로 안전이 보장된 평균 출력을 의미합니다. (필수 입력 값) <br>
+                                            정격 출력은 적정한 배터리팩 용량을 결정하는데 꼭 필요한 정보입니다. </p>
+                                    </div>
+                                    <div class="item">
+                                        <p class="item_tit">최대 출력이란?</p>
+                                        <p class="item_txt">기기의 운전이 보장되는 최대 출력 값을 의미 합니다.<br>
+
+                                            최대 출력은 배터리셀 방전량 선택과 PCM, BMS와 같은 보호회로 선택 등 안전과 관련한 사향을 결정하는데 중요한 정보입니다. </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- page02_02 -->
+                    <div class="page-switch page02_02" data-step-container="4">
+                        <div class="select_items">
+                            <p class="items_tit">희망 배터리셀 종류를 선택해 주세요.</p>
+                            <form class="items_wrap">
+                                <div class="chk_item battery " data-num="tabCont01">
+                                    <input type="checkbox" name="battery" value="리튬이온"><span>리튬이온</span>
+                                </div>
+                                <div class="chk_item battery" data-num="tabCont02" >
+                                    <input type="checkbox" name="battery" value="리튬인산철"><span>리튬인산철</span>
+                                </div>
+                                <div class="chk_item battery" data-num="tabCont03">
+                                    <input type="checkbox" name="battery" value="상관없음"><span>상관없음</span>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="exp_wrap">
+                            <div class="exp_items">
+                                <div class="item">
+                                    <p class="item_tit">리튬이온 배터리와 리튬인산철 배터리의 차이점</p>
+                                    <table class="batteryDif">
+                                        <tr>
+                                            <th>항목</th>
+                                            <th>리튬이온<br>(Li-ion)</th>
+                                            <th>리튬인산철<br>(Li-FePo4)</th>
+                                        </tr>
+                                        <tr>
+                                            <td class="point_a">만충 전압</td>
+                                            <td>4.2V</td>
+                                            <td>3.6V</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="point_a">공칭 전압</td>
+                                            <td>3.6V</td>
+                                            <td>3.2V</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="point_a">종지 전압</td>
+                                            <td>2.5V</td>
+                                            <td>2V</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="point_a">충방전 수명</td>
+                                            <td>약 5~700회</td>
+                                            <td>약 1,500회</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="point_a">장점</td>
+                                            <td>높은 에너지 밀도
+                                                <br>적은 공간
+                                                <br>가벼운 무게
+                                            </td>
+                                            <td>
+                                                긴 수명
+                                                <br>높은 안전성
+                                                <br>낮은 전압 드랍율
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="point_a">단점</td>
+                                            <td>발화 시 열폭주 현상</td>
+                                            <td>상대적으로 크고 무거움</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="point_a">추천분야</td>
+                                            <td>
+                                                경량화, 소형화,
+                                                <br>고출력이 필요한 제품,
+                                                <br>움직이는 제품
+                                            </td>
+                                            <td>
+                                                높은 안전성과 긴 수명이
+                                                <br>중요한 제품, 설치형 제품
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="point_a">제품 예시</td>
+                                            <td>모빌리티, 이동형 로봇,<br> 소형 가전, 동력용 등</td>
+                                            <td>비상전력, 캠핑 배터리,<br> 통신장비, ESS, UPS 등</td>
+                                        </tr>
+                                        <tr class="batterytrNotice">
+                                            <td colspan="3">* 각 전압 및 용량은 배터리 셀의 제조사, 셀모델 등에 따라 차이가 발생할 수 있습니다.
+                                                <br>* 충방전 수명은 상온에서 완전 충전과 방전 시의 사이클 수명 입니다. 사용 환경에 따라 늘거나 줄어들 수 있습니다.</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- page02_03 -->
+                    <!-- <div class="page-switch page02_03" data-step-container="5">
+                        <div class="select_items">
+                            <p class="items_tit">배터리셀 구분을 선택해 주세요.</p>
+                            <form class="items_wrap">
+                                <div class="chk_item battery_type" data-num="tabCont01">
+                                    <input type="checkbox" name="battery_type" value=""><span>고방전: 고출력이 요하는 배터리</span>
+                                </div>
+                                <div class="chk_item battery_type" data-num="tabCont02">
+                                    <input type="checkbox" name="battery_type" value=""><span>중방전: 일반적으로 가장 많이 사용</span>
+                                </div>
+                                <div class="chk_item battery_type" data-num="tabCont03">
+                                    <input type="checkbox" name="battery_type" value=""><span>상관없음</span>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="exp_wrap">
+                            <div class="exp_items_wrap battery_type tabCont01 ">
+                                <div class="exp_items">
+                                    <div class="item">
+                                        <p class="item_tit">국산과 중국산 차이</p>
+                                        <p class="item_txt">중국산 저가 배터리의 경우 폭발 등 안전 이슈가 많습니다. 알엠파워는 리튬이온배터리의 경우 국내산 정품
+                                            배터리셀만을 사용합니다. 리튬인산철배터리의 경우 국내에서 유통되는 대부분의 인산철배터리셀은 중국산이며, 검증되지 않은 저가 배터리는
+                                            사고의 위험이 높습니다. 알엠파워는 자사에서 직접 중국 본토 업체를 방문하여 선정한 최고급 CATL 정품 셀만을 사용합니다. 알엠파워에서
+                                            사용하고 있는 배터리셀은 국내 블랙박스 보조배터리용으로도 수출되고 있는 검증된 제품입니다.</p>
+                                    </div>
+                                    <div class="item">
+                                        <p class="item_tit">고방전과 중방전의 차이</p>
+                                        <p class="item_txt">고방전과 중방전의 차이에 대한 텍스트입니다.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="exp_items_wrap battery_type tabCont02 ">
+                                <div class="exp_items">
+                                    <div class="item">
+                                        <p class="item_tit">국산과 중국산 차이</p>
+                                        <p class="item_txt">중국산 저가 배터리의 경우 폭발 등 안전 이슈가 많습니다. 알엠파워는 리튬이온배터리의 경우 국내산 정품
+                                            배터리셀만을 사용합니다. 리튬인산철배터리의 경우 국내에서 유통되는 대부분의 인산철배터리셀은 중국산이며, 검증되지 않은 저가 배터리는
+                                            사고의 위험이 높습니다. 알엠파워는 자사에서 직접 중국 본토 업체를 방문하여 선정한 최고급 CATL 정품 셀만을 사용합니다. 알엠파워에서
+                                            사용하고 있는 배터리셀은 국내 블랙박스 보조배터리용으로도 수출되고 있는 검증된 제품입니다.</p>
+                                    </div>
+                                    <div class="item">
+                                        <p class="item_tit">고방전과 중방전의 차이</p>
+                                        <p class="item_txt">고방전과 중방전의 차이에 대한 텍스트입니다.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div> -->
+
+                    <!-- page02_03_01 -->
+                    <div class="page-switch page02_03_01" data-step-container="6">
+                        <div class="select_items">
+                            <p class="items_tit">어떤 셀을 사용할까요?</p>
+                            <form class="items_wrap cellChecked">
+                            </form>
+                        </div>
+
+                        <div class="exp_wrap">
+                            <p class="exp_tit cell">셀 모델 선택기준 입니다.</p>
+                            <table class="cell_table">
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- page02_04 -->
+
+                    <div class="page-switch page02_04" data-step-container="7" name="tag1">
+                        <div class="select_items">
+                            <p class="items_tit">전압을 선택해 주세요.</p>
+                            <select class="chk_item voltage voltage1" name="voltage"> <!--// 리튬이온 선택시 전압-->
+                                <option value="0">전압을 선택해 주세요.</option>
+                                <option value="1S 3.7V">1S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.7V</option>
+                                <option value="2S 7.4V">2S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7.4V</option>
+                                <option value="3S 11.1V">3S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;11.1V</option>
+                                <option value="4S 14.8V">4S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;14.8V</option>
+                                <option value="5S 18.5V">5S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;18.5V</option>
+                                <option value="6S 22.2V">6S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;22.2V</option>
+                                <option value="7S 25.9V">7S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;25.9V</option>
+                                <option value="8S 29.6V">8S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;29.6V</option>
+                                <option value="9S 33.3V">9S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;33.3V</option>
+                                <option value="10S 37V">10S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;37V</option>
+                                <option value="11S 40.7V">11S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;40.7V</option>
+                                <option value="12S 44.4V">12S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;44.4V</option>
+                                <option value="13S 48.1V">13S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;48.1V</option>
+                                <option value="14S 51.8V">14S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;51.8V</option>
+                                <option value="15S 55.5V">15S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;55.5V</option>
+                                <option value="16S 59.2V">16S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;59.2V</option>
+                                <option value="17S 62.9V">17S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;62.9V</option>
+                                <option value="18S 66.6V">18S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;66.6V</option>
+                                <option value="19S 70.3V">19S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;70.3V</option>
+                                <option value="20S 74V">20S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;74V</option>
+                                <option value="상담필요">상담필요</option>
+                            </select>
+                            <select class="chk_item voltage voltage2" name="voltage"> <!--//리튬 인산철 선택시 전압-->
+                                <option value="0">전압을 선택해 주세요.</option>
+                                <option value="4S 12.8V">4S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;12.8V</option>
+                                <option value="5S 16V">5S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;16V</option>
+                                <option value="6S 19.2V">6S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;19.2V</option>
+                                <option value="7S 22.4V">7S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;22.4V</option>
+                                <option value="8S 25.6V">8S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;25.6V</option>
+                                <option value="9S 28.8V">9S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;28.8V</option>
+                                <option value="10S 32V">10S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;32V</option>
+                                <option value="11S 35.2V">11S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;35.2V</option>
+                                <option value="12S 38.4V">12S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;38.4V</option>
+                                <option value="13S 41.6V">13S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;41.6V</option>
+                                <option value="14S 44.8V">14S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;44.8V</option>
+                                <option value="15S 48V">15S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;48V</option>
+                                <option value="16S 51.2V">16S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;51.2V</option>
+                                <option value="17S 54.4V">17S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;54.4V</option>
+                                <option value="18S 57.6V">18S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;57.6V</option>
+                                <option value="19S 60.8V">19S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;60.8V</option>
+                                <option value="20S 64V">20S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;64V</option>
+                                <option value="21S 67.2V">21S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;67.2V</option>
+                                <option value="22S 70.4V">22S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;70.4V</option>
+                                <option value="23S 73.6V">23S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;73.6V</option>
+                                <option value="24S 76.8V">24S &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;76.8V</option>
+                                <option value="상담필요">상담필요</option>
+                            </select>
+                        </div>
+
+                        <div class="exp_wrap">
+                            <p class="exp_tit">전압 기준 표</p>
+                            <table class="tbl tbl_style01">
+                                <tr>
+                                    <th>자주 쓰는 시스템 전압(V)</th>
+                                    <th>직렬수 (S)</th>
+                                    <th>종지전압(V)</th>
+                                    <th>공칭전압(V)</th>
+                                    <th>만충전압(V)</th>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>1</td>
+                                    <td>2.5</td>
+                                    <td>3.7</td>
+                                    <td>4.2</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>2</td>
+                                    <td>5</td>
+                                    <td>7.4</td>
+                                    <td>8.4</td>
+                                </tr>
+                                <tr>
+                                    <td class="point">12V(일반용)</td>
+                                    <td>3</td>
+                                    <td>7.5</td>
+                                    <td>11.1</td>
+                                    <td>12.6</td>
+                                </tr>
+                                <tr>
+                                    <td class="point">12V(동력용)</td>
+                                    <td>4</td>
+                                    <td>10</td>
+                                    <td>14.8</td>
+                                    <td>16.8</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>5</td>
+                                    <td>12.5</td>
+                                    <td>18.5</td>
+                                    <td>21</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>6</td>
+                                    <td>15</td>
+                                    <td>22.2</td>
+                                    <td>25.2</td>
+                                </tr>
+                                <tr>
+                                    <td class="point">24V</td>
+                                    <td>7</td>
+                                    <td>17.5</td>
+                                    <td>25.9</td>
+                                    <td>29.4</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>8</td>
+                                    <td>20</td>
+                                    <td>29.6</td>
+                                    <td>33.6</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>9</td>
+                                    <td>22.5</td>
+                                    <td>33.3</td>
+                                    <td>37.8</td>
+                                </tr>
+                                <tr>
+                                    <td class="point">36V</td>
+                                    <td>10</td>
+                                    <td>25</td>
+                                    <td>37</td>
+                                    <td>42</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>11</td>
+                                    <td>27.5</td>
+                                    <td>40.7</td>
+                                    <td>46.2</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>12</td>
+                                    <td>30</td>
+                                    <td>44.4</td>
+                                    <td>50.4</td>
+                                </tr>
+                                <tr>
+                                    <td class="point">48V</td>
+                                    <td>13</td>
+                                    <td>32.5</td>
+                                    <td>48.1</td>
+                                    <td>54.6</td>
+                                </tr>
+                                <tr>
+                                    <td class="point">52V</td>
+                                    <td>14</td>
+                                    <td>35</td>
+                                    <td>51.8</td>
+                                    <td>58.8</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>15</td>
+                                    <td>37.5</td>
+                                    <td>55.5</td>
+                                    <td>63</td>
+                                </tr>
+                                <tr>
+                                    <td class="point">60V</td>
+                                    <td>16</td>
+                                    <td>40</td>
+                                    <td>59.2</td>
+                                    <td>67.2</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>17</td>
+                                    <td>42.5</td>
+                                    <td>62.9</td>
+                                    <td>71.4</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>18</td>
+                                    <td>45</td>
+                                    <td>66.6</td>
+                                    <td>75.6</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>19</td>
+                                    <td>47.5</td>
+                                    <td>70.3</td>
+                                    <td>79.8</td>
+                                </tr>
+                                <tr>
+                                    <td class="point">72V</td>
+                                    <td>20</td>
+                                    <td>50</td>
+                                    <td>74</td>
+                                    <td>84</td>
+                                </tr>
+                            </table>
+
+                            <table class="tbl tbl_style02">
+                                <tr>
+                                    <th rowspan="2">자주 쓰는 시스템 전압(V)</th>
+                                    <th rowspan="2">직렬수 (S)</th>
+                                    <th>종지전압(V)</th>
+                                    <th>공칭전압(V)</th>
+                                    <th>만충전압(V)</th>
+                                </tr>
+                                <tr>
+                                    <!-- <th></th>
+                                    <th></th> -->
+                                    <th>2.5V</th>
+                                    <th>3.2V</th>
+                                    <th>3.65V</th>
+                                </tr>
+                                <tr>
+                                    <td class="point">12V</td>
+                                    <td class="point">4S</td>
+                                    <td>10</td>
+                                    <td>12.8</td>
+                                    <td>14.6</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>5S</td>
+                                    <td>12.5</td>
+                                    <td>16</td>
+                                    <td>18.25</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>6S</td>
+                                    <td>15</td>
+                                    <td>19.2</td>
+                                    <td>21.9</td>
+                                </tr>
+                                <tr>
+                                    <td ></td>
+                                    <td>7S</td>
+                                    <td>17.5</td>
+                                    <td>22.4</td>
+                                    <td>25.5</td>
+                                </tr>
+                                <tr>
+                                    <td class="point">24V</td>
+                                    <td class="point">8S</td>
+                                    <td>20</td>
+                                    <td>25.6</td>
+                                    <td>29.2</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>9S</td>
+                                    <td>22.5</td>
+                                    <td>28.8</td>
+                                    <td>32.8</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>10S</td>
+                                    <td>25</td>
+                                    <td>32</td>
+                                    <td>36.5</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>11S</td>
+                                    <td>27.5</td>
+                                    <td>35.2</td>
+                                    <td>40.1</td>
+                                </tr>
+                                <tr>
+                                    <td class="point">36V</td>
+                                    <td class="point">12S</td>
+                                    <td>30</td>
+                                    <td>38.4</td>
+                                    <td>43.8</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>13S</td>
+                                    <td>32.5</td>
+                                    <td>41.6</td>
+                                    <td>47.4</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>14S</td>
+                                    <td>35</td>
+                                    <td>44.8</td>
+                                    <td>51.1</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>15S</td>
+                                    <td>37.5</td>
+                                    <td>48</td>
+                                    <td>54.7</td>
+                                </tr>
+                                <tr>
+                                    <td class="point">48V</td>
+                                    <td class="point">16S</td>
+                                    <td>40</td>
+                                    <td>51.2</td>
+                                    <td>58.4</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>17S</td>
+                                    <td>42.5</td>
+                                    <td>54.4</td>
+                                    <td>62</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>18S</td>
+                                    <td>45</td>
+                                    <td>57.6</td>
+                                    <td>65.7</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>19S</td>
+                                    <td>47.5</td>
+                                    <td>60.8</td>
+                                    <td>69.3</td>
+                                </tr>
+                                <tr>
+                                    <td class="point">60V</td>
+                                    <td class="point">20S</td>
+                                    <td>50</td>
+                                    <td>64</td>
+                                    <td>73</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>21S</td>
+                                    <td>52.5</td>
+                                    <td>67.2</td>
+                                    <td>76.6</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>22S</td>
+                                    <td>55</td>
+                                    <td>70.4</td>
+                                    <td>80.3</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>23S</td>
+                                    <td>57.5</td>
+                                    <td>73.6</td>
+                                    <td>83.9</td>
+                                </tr>
+                                <tr>
+                                    <td class="point">72V</td>
+                                    <td class="point">24S</td>
+                                    <td>60</td>
+                                    <td>76.8</td>
+                                    <td>87.6</td>
+                                </tr>
+                            </table>
+
+                        </div>
+                    </div>
+
+                    <!-- page02_04_01 -->
+                    <div class="page-switch page02_04_01">
+                        <div class="select_items">
+                            <p class="items_tit">용량을 선택해 주세요.</p>
+                                <select class="chk_item volume" name="volume">
+                                    <option value="0">용량을 선택해 주세요.</option>
+                                    <option value="1P">1P </option>
+                                    <option value="2P">2P</option>
+                                    <option value="3P">3P</option>
+                                    <option value="4P">4P</option>
+                                    <option value="5P">5P</option>
+                                    <option value="6P">6P</option>
+                                    <option value="7P">7P</option>
+                                    <option value="8P">8P</option>
+                                    <option value="9P">9P</option>
+                                    <option value="10P">10P</option>
+                                    <option value="11P">11P</option>
+                                    <option value="12P">12P</option>
+                                    <option value="13P">13P</option>
+                                    <option value="14P">14P</option>
+                                    <option value="15P">15P</option>
+                                    <option value="16P">16P</option>
+                                    <option value="17P">17P</option>
+                                    <option value="18P">18P</option>
+                                    <option value="19P">19P</option>
+                                    <option value="20P">20P</option>
+                                    <option value="상담필요">상담필요</option>
+                                </select>
+                            <p class="volumeNotice">* 선택하신 용량으로는 정격출력 기준<br> 약 <span class="volumeCalc"></span>시간 운전 가능합니다.</p>
+                        </div>
+
+                        <div class="exp_wrap">
+                            <p class="exp_tit">용량 기준 표</p>
+                            <table class="tbl_style01 tbl_style02 tbl1" id="ampere"> <!--//용량기준표-->
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- page02_06 -->
+                    <div class="page-switch page02_06">
+                        <div class="select_items">
+                            <p class="items_tit">보호회로(PCM)를 선택해 주세요.</p>
+                            <form class="items_wrap" id="pcm_form">
+                            </form>
+                            <div class="pcmN">
+                                <p class="pcmNotice">추가적인 요구사항</p>
+                                <p class="pcmNotice2">* 별도의 시스템 통신 연동 등의 조건이 필요할 경우 추가 요구사항에 작성해 주세요.</p>
+                                <textarea type="text" class="info_input" id="pcmRemark"></textarea>
+                            </div>
+
+                        </div>
+                        <!--pcm 이미지-->
+                        <div class="exp_wrap" id="pcm_img">
+                        </div>
+                    </div>
+
+
+                    <!-- 추가된 page page02_06_01 -->
+                    <div class="page-switch page02_06_01" data-step-container="2">
+                        <div class="select_items">
+                            <p class="items_tit">케이스 타입을 선택해 주세요.</p>
+                            <form class="items_wrap" id="case_form">
+                                <div th:each="case, i : ${caseList}" class="chk_item case" th:data-num="tabCont + ${i.index}">
+                                    <input type="checkbox" name="case" value=""><span th:text="${case.name}"></span>
+                                </div>
+                                <div class="chk_item case" data-num="tabCont">
+                                    <input type="checkbox" name="case" value=""><span>케이스 필요없음</span>
+                                </div>
+                                <div class="chk_item case" data-num="tabCont">
+                                    <input type="checkbox" name="case" value=""><span>잘 모르겠음</span>
+                                </div>
+                            </form>
+                            <div class="caseN">
+                                <p class="caseNotice">추가적인 요구사항</p>
+                                <p class="caseNotice2">* 케이스 또는 출력단자에 관련된 추가 요청사항을 적어주새요.</p>
+                                <textarea type="text" id="caseRemark" class="info_input"></textarea>
+                            </div>
+
+                        </div>
+                        <!-- img -->
+                        <div class="exp_wrap">
+                            <div th:each="case, i : ${caseList}" class="exp_items_wrap case" th:classappend="tabCont + ${i.index}">
+                                <p class="exp_tit" th:text="${case.name}"></p>
+                                <div class="exp_items flex_wrap">
+                                    <div class="item" th:each="case_img, i : ${case.itemInfos}">
+                                        <div class="img_wrap">
+                                            <img th:src="${case_img.getDetail()}" alt="판재 밴딩 케이스1">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- page02_07 -->
+                    <div class="page-switch page02_07">
+                        <div class="select_items">
+                            <p class="items_tit">주문 수량을 입력해 주세요.</p>
+                            <ul class="info_wrap">
+                                <li><span class="label">샘플 주문수량</span> <input type="number" id="sample_qty" class="info_input"></li>
+                                <li><span class="label">필요시기</span> <input type="date" class="info_input" id="sample_date">
+                                </li>
+                                <li><span class="label">납품장소(주소)<br></span> <input type="text" id="basAddr" class="info_input" readonly>
+                                    <form onsubmit="return false;">
+                                    <button onclick="findAddr()">주소검색</button>
+                                    </form>
+                                </li>
+                                <li><span class="label">상세주소<br></span> <input type="text" id="dtlAddr" class="info_input" readonly>
+                                <li><span class="label">추가 요청사항<br></span> <textarea type="text" id="remark" class="info_input"></textarea></li>
+                                <div class="file">
+                                    <input type="file" id="input-file" onchange="addFile(this);" maxlength="5" multiple />
+                                    <label class="addfile">첨부파일</label>
+                                    <div id="target_file_wrap">
+                                        <a href="#" onclick="jQuery('#input-file').click()" class="btn btn-primary">첨부파일 선택</a>
+                                        <p class="addfileP">* 파일 개당 20MB 이하 , 5개 미만</p>
+                                    </div>
+                                    <div class="fileList">
+                                    </div>
+                                </div>
+
+
+                            </ul>
+                            <p class="invalidQty"
+                               style="display: none; color:#F44A5A; font-size:1.4em; line-height:2;">수량 정보를 입력해주세요.</p>
+                        </div>
+
+                        <div class="exp_wrap">
+                            <div class="exp_items_wrap">
+                                <div class="exp_items">
+                                    <div class="item">
+                                        <p class="item_txt">특이사항에 샘플 테스트 후 양산 전환 필요시점과 연간 예상 수량, 그외 요청사항 등을 가르쳐 주시면 상담 시 도움이 됩니다.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="page-switch page03" id="pdf">
+                        <div class="customNotice">
+                            <p>* 본 견적은 상담진행을 위한 견적서 입니다.</p>
+                            <p>* 기술 상담 진행 후 확정 견적서를 다시 제공해 드립니다.</p>
+                        </div>
+                        <div class="inner_page03">
+                            <div class="custom">
+                                <h1>견적서 (상담 전)</h1>
+                                <table class="tableInfo">
+                                    <tbody>
+                                    <tr>
+                                        <th rowspan="5">수신자</th>
+                                        <td colspan="2" id="est_company"></td>
+
+                                        <th rowspan="5">공급자</th>
+                                        <td class="backG">등록번호</td>
+                                        <td colspan="4">307-81-50055</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td class="backG">견적일자</td>
+                                        <td id="est_date"></td>
+
+                                        <td class="backG">상호</td>
+                                        <td>주식회사 씨티엔에스</td>
+                                        <td class="backG">성명</td>
+                                        <td>권기정</td>
+                                    </tr>
+                                    <tr>
+
+                                        <td class="backG">전화번호</td>
+                                        <td id="est_tel"></td>
+
+                                        <td class="backG">주소</td>
+                                        <td colspan="3">경상남도 창원시 의창구 팔용동 신화테크노밸리 640호</td>
+
+                                    </tr>
+                                    <tr>
+
+                                        <td class="backG">이메일</td>
+                                        <td id="est_email"></td>
+
+                                        <td class="backG">업태</td>
+                                        <td>제조업</td>
+                                        <td class="backG">종목</td>
+                                        <td>스마트모빌리티제조업</td>
+                                    </tr>
+                                    <tr>
+
+                                        <td colspan="2">견적 요청에 감사드리며 아래와 같이 견적합니다.</td>
+                                        <td class="backG">전화번호</td>
+                                        <td>055-294-9522</td>
+                                        <td class="backG">팩스번호</td>
+                                        <td>055-294-9556</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="8" class="backG">합계금액 : 일금 칠억삼천오백육십이만오천 원정(₩ 735,625,000)(부가세 포함)</th>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <table class="tableDetails">
+                                    <thead>
+                                    <tr>
+                                        <th>순번</th>
+                                        <th>주문번호</th>
+                                        <th>품목명</th>
+                                        <th>규격</th>
+                                        <th>수량</th>
+                                        <th>단가</th>
+                                        <th>공급가액</th>
+                                        <th>세액</th>
+                                        <th>비고</th>
+                                    </tr>
+                                    <tr class="t1">
+                                        <td>1</td>
+                                        <td id="est_num"></td>
+                                        <td id="est_name"></td>
+                                        <td>pack</td>
+                                        <td id="est_battery_qty"></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="t2">
+                                        <td>2</td>
+                                        <td></td>
+                                        <td>입출력단자</td>
+                                        <td></td>
+                                        <td>상담필요</td>
+                                        <td>상담필요</td>
+                                        <td>상담필요</td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="t3">
+                                        <td>3</td>
+                                        <td></td>
+                                        <td id="est_pcm"></td>
+                                        <td></td>
+                                        <td>1</td>
+                                        <td></td>
+                                        <td>가격</td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="t4">
+                                        <td>4</td>
+                                        <td></td>
+                                        <td>개발비</td>
+                                        <td></td>
+                                        <td>1</td>
+                                        <td>필요시</td>
+                                        <td>필요시</td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="t5">
+                                        <th colspan="3">합계</th>
+                                        <td></td>
+                                        <td id="est_qty">668,750,000</td>
+                                        <td id="est_price">66,875,000</td>
+                                        <td id="est_total"></td>
+                                        <td id="est_tax"></td>
+                                        <td></td>
+                                    </tr>
+                                    </thead>
+                                </table>
+                                <table class="tableNotice">
+                                    <tr>
+                                        <th>납기일자</th>
+                                        <td id="est_sample_date"></td>
+                                        <th>납품장소</th>
+                                        <td id="est_address"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>유효일자</th>
+                                        <td id="est_effective_date"></td>
+                                        <th>결제조건</th>
+                                        <td>100% 현금 사전입금</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="backG" colspan="4">비고(요청사항)</th>
+                                    </tr>
+                                    <tr>
+                                        <th>PCM</th>
+                                        <td colspan="3" id="est_pcm_remark"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>케이스</th>
+                                        <td colspan="3" id="est_case_remark"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>주문수량</th>
+                                        <td colspan="3" id="est_remark"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- page03_01 -->
+                    <div class="page-switch page03_01" data-step-container="2">
+                        <div class="exp_wrap">
+                            <p class="items_tit">상담시간 선택</p>
+                            <ul>
+                                <li class="chkTime">
+                                    <span class="label"></span>
+                                    <input type="radio" id="res_tel" name="reservation" value="전화상담">
+                                    <label for="res_tel">전화상담</label>
+                                </li>
+                                <li class="chkTime">
+                                    <span class="label"></span>
+                                    <input type="radio" id="res_meet" name="reservation" value="미팅요청">
+                                    <label for="res_meet">미팅요청</label>
+                                    <ul class="innerChk">
+                                        <li class="chkTime2">
+                                            <span class="label"></span>
+                                            <input type="radio" id="res_offline" name="reservation_type" value="오프라인">
+                                            <label for="res_offline">오프라인</label>
+                                        </li>
+                                        <li class="chkTime2">
+                                            <span class="label"></span>
+                                            <input type="radio" id="res_online" name="reservation_type" value="비대면">
+                                            <label for="res_online">비대면</label>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <div class="wizmo">
+                                <input id="theCalendar">
+                            </div>
+                        </div>
+
+                        <div class="select_items">
+                            <div class="items_tit call">
+                                <p >전화상담을 선택하셨습니다.<br>
+                                    희망하는 날짜를 선택해 주시면 당일 최대한 빠르게 전화상담 도와 드리겠습니다.</p>
+                            </div>
+                            <div class="meet">
+                                <p class="items_tit">상담시간을 선택해 주세요.</p>
+                                <ul>
+                                    <li class="timeli1">
+                                        <form class="items_wrap">
+                                            <div class="chk_item time " data-num="tabCont03_01">
+                                                <input type="radio" name="time" value="09:00 ~ 09:30"><span>09:00 ~ 09:30</span>
+                                            </div>
+                                            <div class="chk_item time" data-num="tabCont03_02">
+                                                <input type="radio" name="time" value="10:00 ~ 10:30"><span>10:00 ~ 10:30</span>
+                                            </div>
+                                            <div class="chk_item time" data-num="tabCont03_03">
+                                                <input type="radio" name="time" value="11:00 ~ 11:30"><span>11:00 ~ 11:30</span>
+                                            </div>
+                                            <div class="chk_item time" data-num="tabCont03_04">
+                                                <input type="radio" name="time" value="13:00 ~ 13:30"><span>13:00 ~ 13:30</span>
+                                            </div>
+                                            <div class="chk_item time" data-num="tabCont03_05">
+                                                <input type="radio" name="time" value="14:00 ~ 14:30"><span>14:00 ~ 14:30</span>
+                                            </div>
+                                            <div class="chk_item time" data-num="tabCont03_06">
+                                                <input type="radio" name="time" value="15:00 ~ 15:30"><span>15:00 ~ 15:30</span>
+                                            </div>
+                                            <div class="chk_item time" data-num="tabCont03_07">
+                                                <input type="radio" name="time" value="16:00 ~ 16:30"><span>16:00 ~ 16:30</span>
+                                            </div>
+                                            <div class="chk_item time" data-num="tabCont03_08">
+                                                <input type="radio" name="time" value="17:00 ~ 17:30"><span>17:00 ~ 17:30</span>
+                                            </div>
+                                        </form>
+                                    </li>
+                                    <li class="timeli2">
+                                        <form class="items_wrap">
+                                            <div class="chk_item time" data-num="tabCont03_09">
+                                                <input type="radio" name="time" value="time9"><span>09:30 ~ 10:00</span>
+                                            </div>
+                                            <div class="chk_item time" data-num="tabCont03_10">
+                                                <input type="radio" name="time" value="time10"><span>10:30 ~ 11:00</span>
+                                            </div>
+                                            <div class="chk_item time" data-num="tabCont03_11">
+                                                <input type="radio" name="time" value="time11"><span>11:30 ~ 12:00</span>
+                                            </div>
+                                            <div class="chk_item time" data-num="tabCont03_12">
+                                                <input type="radio" name="time" value="time12"><span>13:30 ~ 14:00</span>
+                                            </div>
+                                            <div class="chk_item time" data-num="tabCont03_13">
+                                                <input type="radio" name="time" value="time13"><span>14:30 ~ 15:00</span>
+                                            </div>
+                                            <div class="chk_item time" data-num="tabCont03_13">
+                                                <input type="radio" name="time" value="time14"><span>15:30 ~ 16:00</span>
+                                            </div>
+                                            <div class="chk_item time" data-num="tabCont03_13">
+                                                <input type="radio" name="time" value="time15"><span>16:30 ~ 17:00</span>
+                                            </div>
+                                            <div class="chk_item time" data-num="tabCont03_14">
+                                                <input type="radio" name="time" value="time16"><span>17:30 ~ 18:00</span>
+                                            </div>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- page04 -->
+                    <div class="page-switch page04">
+                        <div class="booking_wrap">
+                            <p class="booking_tit">기술상담 예약이 완료되었습니다.<br>예약 시간에 연락하여 친절하고 빠른 상담 도와드리겠습니다.</p>
+                            <div class="booking_info_wrap">
+                                <ul class="booking_info" id="booking_info">
+                                </ul>
+                                <li class="cancel_btn change_btn">예약변경</li>
+                                <a href="" class="cancel_btn">확인</a>
+                            </div>
+                        </div>
+                        <div class="innerpage01">
+                            <p class="customQ lastQ">견적 조회</p>
+                            <ul>
+                                <li>
+                                    <span class="label">견적번호</span>
+                                    <input type="tel" class="info_input numeric-only" name="customNum" pattern="[0-9]*" inputmode="tel" min="0" >
+                                    <div id="target_customNumber1">
+                                        <a href="#" onclick="" class="btn-customS">조회</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="page-switch page04_01">
+                        <div class="customNotice">
+                            <p>* 본 견적은 상담진행을 위한 견적서 입니다.</p>
+                            <p>* 기술 상담 진행 후 확정 견적서를 다시 제공해 드립니다.</p>
+                            <form class="button1" action=''>
+                                <button>조회</button>
+                            </form>
+                            <form class="button2" action=''>
+                                <button>다운로드</button>
+                            </form>
+                        </div>
+                        <div class="inner_page03">
+                            <div class="custom">
+                                <h1>견적서 (상담 전)</h1>
+                                <table class="tableInfo">
+                                    <tbody>
+                                    <tr>
+                                        <th rowspan="5">수신자</th>
+                                        <td colspan="2">하이버스 주식회사 귀하</td>
+
+                                        <th rowspan="5">공급자</th>
+                                        <td class="backG">등록번호</td>
+                                        <td colspan="4">307-81-50055</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td class="backG">견적일자</td>
+                                        <td>2022-04-01</td>
+
+                                        <td class="backG">상호</td>
+                                        <td>주식회사 씨티엔에스</td>
+                                        <td class="backG">성명</td>
+                                        <td>권기정</td>
+                                    </tr>
+                                    <tr>
+
+                                        <td class="backG">전화번호</td>
+                                        <td>02-6559-9052</td>
+
+                                        <td class="backG">주소</td>
+                                        <td colspan="3">경상남도 창원시 의창구 팔용동 신화테크노밸리 640호</td>
+
+                                    </tr>
+                                    <tr>
+
+                                        <td class="backG">이메일</td>
+                                        <td>02-6559-9331</td>
+
+                                        <td class="backG">업태</td>
+                                        <td>제조업</td>
+                                        <td class="backG">종목</td>
+                                        <td>스마트모빌리티제조업</td>
+                                    </tr>
+                                    <tr>
+
+                                        <td colspan="2">견적 요청에 감사드리며 아래와 같이 견적합니다.</td>
+                                        <td class="backG">전화번호</td>
+                                        <td>055-294-9522</td>
+                                        <td class="backG">팩스번호</td>
+                                        <td>055-294-9556</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="8" class="backG">합계금액 : 일금 칠억삼천오백육십이만오천 원정(₩ 735,625,000)(부가세 포함)</th>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <table class="tableDetails">
+                                    <thead>
+                                    <tr>
+                                        <th>순번</th>
+                                        <th>주문번호</th>
+                                        <th>품목명</th>
+                                        <th>규격</th>
+                                        <th>수량</th>
+                                        <th>단가</th>
+                                        <th>공급가액</th>
+                                        <th>세액</th>
+                                        <th>비고</th>
+                                    </tr>
+                                    <tr class="t1">
+                                        <td>1</td>
+                                        <td>20220530-00000</td>
+                                        <td>리튬이온50E16s2p</td>
+                                        <td>pack</td>
+                                        <td>5,000</td>
+                                        <td>133,750</td>
+                                        <td>668,750,000</td>
+                                        <td>66,875,000</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="t2">
+                                        <td>2</td>
+                                        <td></td>
+                                        <td>입출력단자</td>
+                                        <td></td>
+                                        <td>상담필요</td>
+                                        <td>상담필요</td>
+                                        <td>상담필요</td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="t3">
+                                        <td>3</td>
+                                        <td></td>
+                                        <td>PCM모델명</td>
+                                        <td></td>
+                                        <td>1</td>
+                                        <td></td>
+                                        <td>가격</td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="t4">
+                                        <td>4</td>
+                                        <td></td>
+                                        <td>개발비</td>
+                                        <td></td>
+                                        <td>1</td>
+                                        <td>필요시</td>
+                                        <td>필요시</td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="t5">
+                                        <th colspan="3">합계</th>
+                                        <td></td>
+                                        <td>668,750,000</td>
+                                        <td>66,875,000</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    </thead>
+                                </table>
+                                <table class="tableNotice">
+                                    <tr>
+                                        <th>납기일자</th>
+                                        <td>앞장에서 입력</td>
+                                        <th>납품장소</th>
+                                        <td>앞장에서 입력</td>
+                                    </tr>
+                                    <tr>
+                                        <th>유효일자</th>
+                                        <td>2022-04-07(오늘 날짜 + 2주 계산)</td>
+                                        <th>결제조건</th>
+                                        <td>100% 현금 사전입금</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="backG" colspan="4">비고(요청사항)</th>
+                                    </tr>
+                                    <tr>
+                                        <th>PCM</th>
+                                        <td colspan="3">앞장의 특이사항 표시</td>
+                                    </tr>
+                                    <tr>
+                                        <th>케이스</th>
+                                        <td colspan="3">앞장의 특이사항 표시</td>
+                                    </tr>
+                                    <tr>
+                                        <th>주문수량</th>
+                                        <td colspan="3">앞장의 특이사항 표시</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="page02_btn">page02</div>
+    <div class="page03_btn">page03</div>
+
+    <div id="prev" class="arrow_btn prev"><span>이전</span></div>
+    <div id="next" class="arrow_btn next on"><span>다음</span></div>
+</div>
+<script>
+
+    /* 다음 버튼 누르기 */
+    // $("#next").on("click", function () {
+    //
+    //     const content = $("#content");
+    //     const current_step = content.attr("data-step");
+    //     const next_step = Number(current_step) + 1;
+    //     const page_switch_on = $(".page-switch--on");
+    //
+    //     content.attr("data-step", next_step);
+    //     page_switch_on.removeClass("page-switch--on");
+    //
+    //     console.log(next_step);
+    //
+    //     switch (current_step) {
+    //
+    //         case "1":
+    //             content.removeClass("pg_layout01", "pg_layout02")
+    //             content.addClass("pg_layout03")
+    //             $(".page-switch[data-step-container='"+ next_step +"']").addClass("page-switch--on")
+    //             break;
+    //         case "2":
+    //
+    //
+    //     }
+    //
+    // })
+
+</script>
+
+</body>
+
+</html>
