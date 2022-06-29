@@ -19,6 +19,10 @@ $(document).ready(function () {
     //총 13page
     let theCalendar = new wijmo.input.Calendar('#theCalendar');  //위즈모달력
 
+    var today = _getFormatDate(new Date());
+    $('#sample_date').attr('min',today);
+    $('#est_sample_date').attr('min',today);
+
 
     // header
     $('.header .gnb li:first-child').addClass('current');
@@ -1025,7 +1029,7 @@ $(document).ready(function () {
 
 
     $('.page03_01 .chkTime:nth-of-type(1) > input').click(function(){
-        $(".select_wrap .page03_01").css('height','64rem');
+        $(".select_wrap .page03_01").css('height','20rem');
         $(".page03_01 .select_items .meet").removeClass('height');
         $(".page03_01 .select_items .call").removeClass('on');
         $(".page03_01 .select_items .call").addClass('on');
@@ -1033,7 +1037,7 @@ $(document).ready(function () {
     });
 
     $('.page03_01 .chkTime:nth-of-type(2) > input').click(function(){
-        $(".select_wrap .page03_01").css('height','115rem');
+        $(".select_wrap .page03_01").css('height','64rem');
         $(".page03_01 .select_items .meet").removeClass('height');
         $(" .page03_01 .select_items .meet").addClass('height');
         $(".page03_01 .select_items .call").removeClass('on');
