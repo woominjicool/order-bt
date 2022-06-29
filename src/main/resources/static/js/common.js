@@ -16,6 +16,21 @@ $(function(){
   });
 });
 
+function _getFormatDate(date, type) {
+    if(type == 'm'){
+        var year = date.getFullYear();
+        var month = ("0" + (1 + date.getMonth())).slice(-2);
+
+        return year + "-" + month;
+    }else{
+        var year = date.getFullYear();
+        var month = ("0" + (1 + date.getMonth())).slice(-2);
+        var day = ("0" + date.getDate()).slice(-2);
+
+        return year + "-" + month + "-" + day;
+    }
+}
+
 // 탭 메뉴
 $(document).ready(function() {
   $(".tabpanel").hide(); 
