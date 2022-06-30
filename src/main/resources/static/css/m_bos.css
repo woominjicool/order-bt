@@ -778,15 +778,13 @@
     top: auto;
 }
 
-
 .content.pg_layout01 .arrow_btn.next {
     right: 3rem;
-    
     /* top: 1rem; */
     position: fixed;
     bottom: 5rem;
-    
 }
+
 .content.pg_layout01 .arrow_btn.next.on {
     display: block;
     z-index: 999999;
@@ -2034,9 +2032,8 @@ input:read-only {
     font-size: 1.8rem;
     line-height: 120%;
 }
-  
-  .innerpage01 input {
-    width: 24rem;
+.innerpage01 input {
+    width: 17rem;
     height: 5rem;
     padding: 0 2rem;
     border: none;
@@ -2063,7 +2060,11 @@ input:read-only {
     height: auto;
     /* height: 75rem; */
 }
-
+#target_customNumber1 {
+    display: inline-block;
+    margin-top: 1rem;
+    /* width: 20rem; */
+}
 
 .page02_03_01 .cell_table td {
     padding: 1rem 0.9rem;
@@ -2081,7 +2082,7 @@ input:read-only {
 .innerpage01 {
     position: absolute;
     top: 50rem;
-    height: 21rem;
+    height: 17rem;
     left: 0;
     background: #fff;
     width: 100%;
